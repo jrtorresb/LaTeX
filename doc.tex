@@ -1,0 +1,244 @@
+\documentclass[12pt]{book} % Este es para el tipo de documento
+\usepackage[spanish]{babel} % Este es para el idioma
+\usepackage[T1]{fontenc} % Para los acentos
+\usepackage[utf8]{inputenc} %Para los acentos ya los escribes normal
+\spanishdecimal{.} %para escribir punto decimal en modo matematico%
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{float} %Sirve para poner las imágenes donde quieras, siempre poniendo [H]
+
+
+
+\title{Notes Portfolio Selection in \LaTeX{}}
+\author{José Roberto Torres Bello}
+\date{\today}
+
+\begin{document} % Empieza el documento
+
+
+\maketitle %se encarga de escribir los datos del título con la información que indicaste en el preámbulo.
+
+\tableofcontents  %pone el indice
+
+\newpage
+
+\chapter{Notas Markowitz}
+
+Markowitz en 1952 mediante su artículo ``Portfolio Selection'' inició lo que se conoce como la teoría moderna de portafolio.
+
+\section{Metodología}
+
+\begin{itemize}
+\item[1.] Seleccionar diversas acciones de la bolsa de valores.
+\item[2.] Determinar sus rendimientos de manera continua con la fórmula:
+\begin{equation} \label{eq1}
+R_i=Ln \left (\frac{p_1}{p_0}\right )
+\end{equation}
+\item[3.] Se obtienen los rendimientos de cada acción, en este caso es la media de los rendimientos de cada acción:
+\begin{equation} \label{eq2}
+E(r_i)=\bar{x}=\frac{\sum\limits_{i=1}^nR_i}{n}
+\end{equation}
+\\
+$E(r_i)=$Rendimiento esperado de cada activo del portafolio, \\
+$n=$número de rendimientos.
+\item[4.] Se obtiene la varianza y la desviación estándar de cada activo con las siguientes fórmulas: 
+\begin{equation}\label{eq3}
+Var=\sigma_i^{2}=\frac{\sum\limits_{i=1}^n (x_i-\bar{x})}{n}
+\end{equation}
+\begin{equation}\label{eq4}
+Sd=\sigma_i=\sqrt{Var_i}
+\end{equation}
+\item[5.] Se requiere realizar una matriz de varianzas-covarianzas entre los activos por lo que se utiliza la fórmula:
+\begin{equation}\label{eq5}
+Cov(x,y)=\frac{\sum\limits_{i=1}^n (x_i-\bar{x})(y_i-\bar{y})}{n}
+\end{equation}
+\item[6.] También se determina la matriz de correlaciones entre los activos financieros:
+\begin{equation}\label{eq6}
+r=\frac{Cov(x,y)}{\sigma_x \cdot \sigma_y}
+\end{equation}
+\item[7.] Siguiendo el modelo de Markowitz, el rendimiento esperado de cada portafolio es la suma ponderada de los rendimientos esperados de los activos que componen cada portafolio:
+\begin{equation}\label{eq7}
+E(r_p)=\sum_{i=1}^{n}w_i\cdot E(r_i)
+\end{equation}
+$E(r_p)=$Rendimiento esperado del portafolio $p$,\\
+$E(r_i)=$Rendimiento esperado del activo $i$ del portafolio,\\
+$w_i=$Proporción de la inversión realizada del activo $i$ del portafolio.\\
+
+Es claro que la suma de las ponderaciones deber igual a la unidad, de manera que se puede definir como restricción del problema de selección de inversiones:
+\begin{equation}\label{eq8}
+\sum_{i=1}^{n}w_i=1
+\end{equation}
+Si sólo tenemos esta restricción, se debe aceptar que peden resultar ponderadores negativos lo cual implica reconocer la posibilidad de que un portafolio puede estar constituido por algunos componentes que en realidad son pasivos (algo que se debe, no que se posee). Esto es perfectamente factible en aquellos casos en que el carácter de las instituciones financieras permite las ventas en corto, es decir, la venta de un activo que ha sido tomado en préstamo y la utilización de este ingreso para la compra de otro activo. En este caso, el portafolio de inversión estará formado por algunos componentes cuyas ponderaciones son negativas y otros con ponderaciones superiores a la unidad sin dejar de satisfacer la restricción.
+
+\item[8.] Por otra parte, la definición de la varianza del rendimiento del portafolio es:
+\begin{equation}\label{eq9}
+\sigma_{p}^{2}=\sum_{i=1}^{n}\sum_{k=1}^{n}w_i\cdot w_k\cdot \sigma_{ik}
+\end{equation}
+Los elementos de la diagonal principal son las varianzas de los $n$ activos y el resto las covarianzas.
+\item[9.] La desviación estándar del rendimiento del portafolio es:
+
+\begin{equation}\label{eq10}
+\sigma_{p}=\sqrt{\sum_{i=1}^{n}\sum_{k=1}^{n}w_i\cdot w_k\cdot \sigma_{ik}}
+\end{equation}
+\end{itemize}
+La frontera eficiente está constituida por todos aquellos portafolios o comibinaciones de activos que simultáneamente cumplen con dos condiciones
+\begin{itemize}
+\item[a)] Tienen mínima varianza dentro de todas las combinaciones que tienen una tasa de rendimiento dada.
+\item[b)] Tienen la tasa de rendimiento más alta dentro de todas las combinaciones posibles que tienen una varianza dada. 
+\end{itemize}
+
+\section{Punto de Varianza Mínima Global}
+
+Se plantea el siguiente problema de optimización restringida:
+
+$$Min=\frac{1}{2}\sigma_{p}^2$$
+$$\text{s.a.}  \sum\limits_{i=1}^{n}w_i=1 $$
+
+Este problema de optimizaión se resulve fácilmente mediante la técnica de multiplicadores de Lagrange. Fromamos el Lagrangiano:
+
+$$\mathcal{L} = \frac{1}{2}\sigma_{p}^2 + \lambda (1 -\sum\limits_{i=1}^{n}w_i) $$
+$$\mathcal{L} = \frac{1}{2}\sum_{i=1}^{n}\sum_{k=1}^{n}w_i\cdot w_k\cdot \sigma_{ik} + \lambda (1 -\sum\limits_{i=1}^{n}w_i) $$
+Donde $\lambda=$multiplicador de Lagrange.
+
+La condición de primer orden para obtener los puntos críticos consiste en derivar parcialmente con respecto a los $n$ ponderadores $(w_i)$ y respecto al multiplicador de Lagrange, luego se iguala a cero y se pueden despejar los $n$ valores $w$ y $\lambda$.
+
+$$
+\begin{matrix}
+\frac{\partial\mathcal{L}}{\partial w_1}=w_1\sigma_{11}+w_2\sigma_{12}+\ldots+w_n\sigma_{1n}-\lambda=0 \\ 
+\\
+\frac{\partial\mathcal{L}}{\partial w_2}=w_1\sigma_{21}+w_2\sigma_{22}+\ldots+w_n\sigma_{2n}-\lambda=0\\ 
+\vdots \\ 
+\vdots \\ 
+\frac{\partial\mathcal{L}}{\partial w_n}=w_n\sigma_{n1}+w_2\sigma_{n2}+\ldots+w_n\sigma_{nn}-\lambda=0\\  
+\\
+\frac{\partial\mathcal{L}}{\partial \lambda}=w_1+w_2+\ldots+w_n-1=0
+\end{matrix}
+$$
+
+Se puede representar la condición de primer orden como un sistema de $n+1$ ecuaciones y el mismo número de incógnitas, si se definen las siguientes matrices:
+$$
+V1=\begin{bmatrix}
+ \sigma_{11}&\sigma_{12}  & \cdots & \sigma_{1n} & 1 \\ 
+ \sigma_{21}&\sigma_{22}  & \cdots & \sigma_{2n} & 1 \\ 
+\vdots &\vdots  & \cdots & \vdots & \vdots \\ 
+ \sigma_{n1}&\sigma_{n2}  & \cdots & \sigma_{nn} & 1 \\ 
+1 & 1 & \cdots & 1 & 0 
+\end{bmatrix}, \ W1=\begin{bmatrix}
+w_1\\ 
+w_2\\ 
+\vdots \\ 
+w_n\\ 
+\lambda
+\end{bmatrix},\ B1=\begin{bmatrix}
+0\\ 
+0\\ 
+\vdots \\ 
+0\\ 
+1
+\end{bmatrix}
+$$
+Entonces el sistema queda representado de la forma:
+$$V1\cdot W1=B1$$
+De manera que la solución al problema de optimización es:
+$$W1=V1^{-1} \cdot B1$$
+El vector $W1$ que se ha encontrado corresponde a las ponderaciones que debe tener cada uno de los $n$ activos en el portafolio que produce la varianza más baja de todos los portafolios que se pueden construir con estos activos, más el valor del multiplicador $\lambda$. Dado que se conocen las tasas esperadas de rendimiento de cada uno de los activos se puede conocer el rendimiento esperado del portafolio de varianza mínima y la varianza del mismo.
+
+\section{Frontera Eficiente}
+Una vez que se tienen las coordenadas del punto de varianza mínima global, lo que se tiene es un problema de optimización muy similar al anterior, aunque ahora se debe agregar una restricción adicional. El problema consiste en encontrar las combinaciones de los $n$ activos que producen varianza mínima para una tasa esperada de rendimiento dada, tal que ella sea superior a $R_p$. Repitiendo este procedimiento para distintas tasas esperadas de rendimiento se encuentran los portafolios que dibujan la frontera eficiente.
+Se plantea el siguiente problema de optimización restringida:
+
+$$Min=\frac{1}{2}\sigma_{p}^2$$
+$$\text{s.a.}  \sum\limits_{i=1}^{n}w_i r_i=R_p $$
+$$ \sum\limits_{i=1}^{n}w_i=1 $$
+Se forma nuevamente el Lagrangiano:
+
+$$\mathcal{L} = \frac{1}{2}\sigma_{p}^2 + \lambda_1 (R_p -\sum\limits_{i=1}^{n}w_i r_i)+\lambda_2 (1 -\sum\limits_{i=1}^{n}w_i ) $$
+
+$$\mathcal{L} = \frac{1}{2}\sum_{i=1}^{n}\sum_{k=1}^{n}w_i\cdot w_k\cdot \sigma_{ik} + \lambda_1 (R_p -\sum\limits_{i=1}^{n}w_i r_i)+\lambda_2 (1 -\sum\limits_{i=1}^{n}w_i ) $$
+
+
+
+
+Donde $\lambda_1$ y $\lambda_2$ son los multiplicadores de Lagrange.
+Se obtienen las condiciones de primer orden y se obtiene un sistema de ecuaciones el cual se puede representar por:
+$$V2 \cdot W2=B2$$
+donde
+$$
+V2=\begin{bmatrix}
+ \sigma_{11}&\sigma_{12}  & \cdots & \sigma_{1n} & \bar{r_1} &1 \\ 
+ \sigma_{21}&\sigma_{22}  & \cdots & \sigma_{2n} & \bar{r_2} & 1 \\ 
+\vdots &\vdots  & \cdots & \vdots & \vdots  & \vdots\\ 
+ \sigma_{n1}&\sigma_{n2}  & \cdots & \sigma_{nn} & \bar{r_n}& 1 \\ 
+\bar{r_1} & \bar{r_2} & \cdots  & \bar{r_n} & 0 & 0\\
+1 & 1 & \cdots & 1 & 0 & 0
+\end{bmatrix}, \ W2=\begin{bmatrix}
+w_1\\ 
+w_2\\ 
+\vdots \\ 
+w_n\\ 
+\lambda_1 \\
+\lambda_2
+\end{bmatrix},\ B2=\begin{bmatrix}
+0\\ 
+0\\ 
+\vdots \\ 
+0\\ 
+\bar{r_p}\\ 
+1\\ 
+\end{bmatrix}
+$$
+
+Por lo tanto la solución es:
+
+$$W2=V2^{-1}\cdot B2$$.
+
+
+
+
+
+
+\chapter{Declaraciones importantes}
+
+La presente investigación será de carácter eminentemente descriptivo, debido a que su propósito es analizar los sectores candidatos a $ETF's$ como producto financiero externo para los inversionistas, \textbf{NO} constituye una oferta para tomar decisiones de inversión, ni para comprar o vender valores.\\
+
+La información y los análisis contenidos en este documento no pretenden ofrecer asesoría fiscal, legal o de inversión y podrían no adecuarse a las circunstancias específicas del lector. Cada inversionista deberá determinar por sí mismo si una
+inversión en cualquiera de los valores mencionados en este documento es adecuada y deberá consultar a sus propios asesores fiscales, legales, de inversión u otros, para determinarlo
+
+
+
+\begin{thebibliography}{10}
+
+\bibitem{Apa} \textsc{García, M. A., Taboada, A. G., \& Sanjuán, I. M. Article November 2015.}
+\textit{APARICIÓN Y CRECIMIENTO DE LOS ETF EN ESPAÑA Una interesante inversión alternativa poco conocida en tiempos de crisis.}
+
+
+\bibitem{Cos} \textsc{Fonseca Villalobos, O. G. (2013).s} \textit{ Confección de cartera de inversión para un cliente institucional de INS Valores Puesto de Bolsa SA con instrumentos financieros internacionales.}
+
+
+\bibitem{3} \textsc{Garavito Galindo, E. D. V., \& Esquivel Giraldo, J. (2012).}
+\textit{Diagnostico de las ventajas y desventajas de los “ETF (Exchange traded funds)” en los portafolios de inversión del mercado Colombiano (Bachelor's thesis, Universidad de La Sabana).}
+
+\bibitem{4} \textsc{Vallejo Morales, M. (2013).}
+\textit{Estructuración de una cartera compuesta por $ETF's$ (Master's thesis, Universidad EAFIT).}
+
+\bibitem{5} \textsc{Galindo, D. P. G., \& Mariscal, J. A. M. (2013).}
+\textit{ Portafolio de inversión en exchange traded funds (ETF) de índices accionarios de mercados globales.} Revista Soluciones de Postgrado, 1(2), 93-102.
+
+
+\bibitem{EXTFM} \textsc{Gastineau, G. L. (2010).}
+\textit{  The exchange-traded funds manual (Vol. 186). John Wiley \& Sons.} 
+
+ 
+
+
+
+
+\end{thebibliography}
+
+
+\end{document}
+
+
+
+
